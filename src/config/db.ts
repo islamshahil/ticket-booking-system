@@ -8,12 +8,8 @@ const pool = new Pool({
 });
 
 pool.on("connect", () => {
-  console.log("✅ A new connection has been established to the PostgreSQL Database");
+  console.log("✅ Connected to PostgreSQL Database");
 });
-
-pool.connect()
-    .then(() => console.log('✅ Connected to PostgreSQL Database'))
-    .catch((err) => console.error('❌ PostgreSQL connection error:', err));
 
 export default pool;
 

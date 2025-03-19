@@ -7,6 +7,7 @@ export class BookingService {
     // Check seat availability
     static async checkSeatAvailability(eventId: number, seatNumber: string): Promise<boolean> {
         const seatKey = `event:${eventId}:seat:${seatNumber}`;
+        // console.log(seatKey);
         // Check if the seat is already booked in Redis
         const isBooked = await redisClient.get(seatKey);
         if (isBooked) return false;
@@ -22,6 +23,7 @@ export class BookingService {
         
         // First, check if the seat is available
         const seatId = await this.checkSeatAvailability(eventId, seatNumber);
+        // console.log(seatId);
         if (!seatId) {
             throw new Error('Seat already booked');
         }
