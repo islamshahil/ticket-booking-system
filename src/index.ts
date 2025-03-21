@@ -8,6 +8,8 @@ import helmet from 'helmet';
 import './config/db';  // PostgreSQL connection
 import './config/redis';  // Redis connection
 import bookingRoutes from './routes/booking.routes';
+import './workers/ticketEvents.consumer'; // Start Kafka consumer
+
 
 dotenv.config();
 
@@ -36,6 +38,7 @@ const syncRedisWithDatabase = async () => {
     }
 };
 
+// As per requirement
 syncRedisWithDatabase();
 
 app.use('/api/bookings', bookingRoutes);

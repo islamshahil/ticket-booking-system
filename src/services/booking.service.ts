@@ -1,6 +1,7 @@
 import { Pool } from 'pg';
 import redisClient from '../config/redis';
 import db from '../config/db';
+import { producer } from '../config/kafka';
 
 export class BookingService {
     
@@ -54,9 +55,32 @@ export class BookingService {
             const booking = await db.query(insertBookingQuery, [userId, eventId, seatId]);
             // Commit transaction
             await db.query('COMMIT');
+
+            // Publish Kafka Event for successful booking
+            await producer.send({
+                topic: 'ticket-events',
+                messages: [
+                    {
+                        key: 'ticket-booked',
+                        value: JSON.stringify({
+                            type: 'ticket-booked',
+                            bookingId: booking.rows[0].id,
+                            userId,
+                            eventId,
+                            seatNumber,
+                            status: 'CONFIRMED',
+                            timestamp: new Date().toISOString()
+                        })
+                    }
+                ]
+            });
+            
             return { bookingId: booking.rows[0].id, status: 'CONFIRMED' };
 
         } catch (error: unknown) {
+            // Remove booking from Redis
+            const seatKey = `event:${eventId}:seat:${seatNumber}`;
+            await redisClient.del(seatKey);
             await db.query('ROLLBACK');
             if (error instanceof Error) {
                 throw new Error(error.message);
@@ -77,7 +101,7 @@ export class BookingService {
         }
         const { event_id, seat_id } = rows[0];
 
-        // Update booking from PostgreSQL
+        // Update booking in PostgreSQL
         await db.query(`UPDATE bookings SET status = 'CANCELED' WHERE id = $1`, [bookingId]);
 
         // Query the database to get seatNumber 
@@ -92,6 +116,28 @@ export class BookingService {
         const seatKey = `event:${event_id}:seat:${seat_number}`;
         await redisClient.del(seatKey);
 
+        // Update seats in PostgreSQL
+        await db.query(`UPDATE seats SET is_booked = 'FALSE' WHERE id = $1`, [seat_id]);
+
+        // Publish Kafka Event for cancellation
+        await producer.send({
+            topic: 'ticket-events',
+            messages: [
+                {
+                    key: 'ticket-canceled',
+                    value: JSON.stringify({
+                        type: 'ticket-canceled',
+                        bookingId,
+                        eventId: event_id,
+                        seatId: seat_id,
+                        seatNumber: seat_number,
+                        status: 'CANCELED',
+                        timestamp: new Date().toISOString()
+                    })
+                }
+            ]
+        });
+        
         return { bookingId, status: 'CANCELLED' };
     }
 
