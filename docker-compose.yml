@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ticket-app
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+
+  consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile.consumer
+    container_name: ticket-consumer
+    env_file:
+      - .env

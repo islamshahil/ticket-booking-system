@@ -9,7 +9,6 @@ import './config/db';
 import './config/redis';
 import bookingRoutes from './routes/booking.routes';
 import { initSocketIO } from './config/socket';
-import './workers/ticketEvents.consumer';
 import uiRoutes from './routes/ui.routes';
 import eventRoutes from './routes/event.routes';
 

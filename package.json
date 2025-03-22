@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.ts",
-    "consume": "ts-node src/workers/ticketEvents.consumer.ts",
-    "test": "jest",
-    "test:watch": "jest --watch"
+  "dev": "nodemon src/index.ts",
+  "consume": "ts-node src/workers/ticketEvents.consumer.ts",
+  "test": "jest",
+  "test:watch": "jest --watch",
+  "build": "tsc",
+  "start": "node dist/index.js",
+  "start:consume": "node dist/workers/ticketEvents.consumer.js",
+  "start:all": "sh -c 'node dist/index.js & node dist/workers/ticketEvents.consumer.js && wait'"
   },
   "keywords": [],
   "author": "",
