@@ -1,0 +1,25 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ticket Booking</title>
+  <style>
+    .seat {
+      display: inline-block;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+      color: #fff;
+    }
+    .available { background-color: green; }
+    .booked { background-color: red; }
+  </style>
+</head>
+<body>
+  <h1>🎫 Events & Seats</h1>
+  <div id="event-list"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/app.js" defer></script>
+</body>
+</html>
