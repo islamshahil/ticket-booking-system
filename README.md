@@ -1,7 +1,7 @@
 # 🎟️ Ticket Booking System - README
 
 ## ✅ Overview
-A microservice-based, real-time ticket booking system designed to handle high concurrency , providing fair, first-come-first-serve seat allocation for events such as concerts or conferences.
+A microservice-based, real-time ticket booking system designed to handle high concurrency, providing fair, first-come-first-serve seat allocation for events such as concerts or conferences.
 
 ---
 
@@ -19,8 +19,8 @@ The system uses PostgreSQL for structured booking data with proper relationships
   - `seats(event_id, seat_number)` → for seat lookup
   - `bookings(user_id)` → for user-specific fetches
 
-📷 **Diagram:**
-![Low-Level DB Schema](./docs/db-schema.png) <!-- Replace with your actual image path -->
+📷 **Diagram:**  
+![Low-Level DB Schema](./docs/db-schema.png)
 
 ---
 
@@ -75,8 +75,8 @@ The system provides real-time UI updates through:
 
 ## 5️⃣ System Design Documentation
 
-📷 **Architecture Diagram:**
-![System Architecture](./docs/architecture-diagram.png) <!-- Replace with your image -->
+📷 **Architecture Diagram:**  
+![System Architecture](./docs/architecture-diagram.png)
 
 ### 🔸 Design Highlights:
 - Microservice-oriented (API server, Kafka consumer)
@@ -100,13 +100,12 @@ The system provides real-time UI updates through:
 
 > 💡 Please note: Due to resource constraints on the Raspberry Pi 5, **no stress testing or high-volume concurrency testing is requested**.
 
-The app is publicly accessible via a secure **Cloudflare ZeroTrust tunnel** at:
+The app is publicly accessible via a secure **Cloudflare ZeroTrust tunnel** at:  
+🔗 [https://tbs.watevr.co.in](https://tbs.watevr.co.in)
 
-🔗 **https://tbs.watevr.co.in/**
+### Public Demo - cURL Commands
 
-### Updated cURL Commands
-
-### Book a Ticket:
+#### Book a Ticket:
 ```bash
 curl -X POST https://tbs.watevr.co.in/api/bookings/book \
   -H "Content-Type: application/json" \
@@ -117,14 +116,33 @@ curl -X POST https://tbs.watevr.co.in/api/bookings/book \
 }'
 ```
 
-### Cancel a Booking:
+#### Cancel a Booking:
 ```bash
 curl -X DELETE https://tbs.watevr.co.in/api/bookings/cancel/123
 ```
 
-### Fetch User Bookings:
+#### Fetch User Bookings:
 ```bash
 curl https://tbs.watevr.co.in/api/bookings/user/1
+```
+
+### Running Locally
+If you want to run this project locally:
+
+1. Clone the repo:
+```bash
+git clone https://github.com/your-username/ticket-booking-system.git
+cd ticket-booking-system
+```
+
+2. Start required services (Redis, PostgreSQL, Kafka) via Docker or manually.
+3. Create the topic `ticket-events` in Kafka manually.
+4. Use the provided `database-schema.sql` to create tables in PostgreSQL.
+5. Insert dummy data using sample queries inside `db/seed.sql` (or similar).
+6. Copy `.env-example` to `.env` and update values accordingly.
+7. Run the application:
+```bash
+docker-compose up --build -d
 ```
 
 ---
@@ -135,27 +153,21 @@ curl https://tbs.watevr.co.in/api/bookings/user/1
 - GitHub is used for source code version control.
 - Due to time constraints, a CI/CD pipeline has not been set up.
 - The application is deployed manually using:
-
 ```bash
 git pull origin main
 sudo docker-compose up --build -d
 ```
-The application is fully Dockerized and runs on a **Raspberry Pi 5**, utilizing the following services:
 
-- **Redis**, **PostgreSQL**, and **Kafka** are all running as separate Docker containers.
-- The application (Express API + WebSocket + Kafka consumer) is Dockerized and runs in containers as well.
-- All configurations (database URL, Kafka broker, Redis host, etc.) are managed through a shared `.env` file.
-
-- Redis, PostgreSQL, and Kafka are running as Docker containers on the same Raspberry Pi 5 server.
-- The application reads service endpoints from a shared `.env` file.
-- Publicly exposed via Cloudflare ZeroTrust at: [https://tbs.watevr.co.in](https://tbs.watevr.co.in)
+- Redis, PostgreSQL, and Kafka are all running as separate Docker containers on a Raspberry Pi 5.
+- The application (Express API + WebSocket + Kafka consumer) is Dockerized and configured via shared `.env` file.
+- Publicly exposed using Cloudflare ZeroTrust.
 
 ---
 
 ## 🧪 Testing
 
-- Jest is used for unit testing of all BookingService methods.
-- Redis, Kafka, and PostgreSQL interactions are mocked using `jest.mock()`.
+- Jest is used for unit testing of all `BookingService` methods.
+- Redis, Kafka, and PostgreSQL are mocked using `jest.mock()`.
 - Kafka producers and Redis clients are stubbed to avoid real connections.
 
 ### Run tests:
@@ -167,21 +179,16 @@ npm run test
 
 ## 🚀 Future Enhancements
 
-- Currently, the system uses a mix of REST APIs and Kafka events.
-- A full migration to a **truly event-driven architecture** is planned, where:
-  - All state changes (e.g., seat updates, booking actions) will be Kafka-driven.
-  - Each microservice will react to Kafka topics instead of synchronous REST calls.
+- The system currently uses a hybrid of REST APIs and Kafka.
+- A full migration to a **fully event-driven architecture** is planned where:
+  - All state changes are communicated via Kafka topics.
+  - Microservices become reactive and decoupled.
 
-### Additional Planned Features:
-- Rate limiting and schema validation using libraries like **Zod** or **Joi**
-- GitHub Actions-based CI/CD pipeline for auto-testing and deployment
-- Admin dashboard for managing events and seats
-- Email/SMS notifications
-- Payment gateway integration (e.g., Stripe, Razorpay)
-
+### Additional Features in Roadmap:
+- Rate limiting and schema validation (Zod / Joi)
+- GitHub Actions for CI/CD
 ---
 
-
-
 ## ✅ Conclusion
-You now have a fully containerized, real-time ticket booking system that's scalable, fault-tolerant, and production ready!
+A fully containerized, real-time ticket booking system that's scalable, fault-tolerant, and production ready!
+
