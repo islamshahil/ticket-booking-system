@@ -111,14 +111,14 @@ curl -X POST https://tbs.watevr.co.in/api/bookings/book \
   -H "Content-Type: application/json" \
   -d '{
     "userId": 1,
-    "eventId": 1,
-    "seatNumber": "A1"
+    "eventId": 2,
+    "seatNumber": "S1"
 }'
 ```
 
 #### Cancel a Booking:
 ```bash
-curl -X DELETE https://tbs.watevr.co.in/api/bookings/cancel/123
+curl -X DELETE https://tbs.watevr.co.in/api/bookings/cancel/1
 ```
 
 #### Fetch User Bookings:
