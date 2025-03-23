@@ -19,6 +19,4 @@ services:
     container_name: ticket-consumer
     env_file:
       - .env
-    networks:
-      - tbs-net
     restart: unless-stopped

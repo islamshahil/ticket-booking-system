@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "dev": "nodemon src/index.ts",
-    "consume": "ts-node src/workers/ticketEvents.consumer.ts",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "start": "node dist/index.js",
-    "start:consume": "node dist/workers/ticketEvents.consumer.js",
-    "start:all": "sh -c 'node dist/index.js & node dist/workers/ticketEvents.consumer.js && wait'"
+  "build": "npx tsc",
+  "dev": "nodemon src/index.ts",
+  "consume": "ts-node src/workers/ticketEvents.consumer.ts",
+  "test": "jest",
+  "test:watch": "jest --watch",
+  "build": "tsc",
+  "start": "node dist/index.js",
+  "start:consume": "node dist/workers/ticketEvents.consumer.js",
+  "start:all": "sh -c 'node dist/index.js & node dist/workers/ticketEvents.consumer.js && wait'"
   },
   "keywords": [],
   "author": "",
@@ -25,8 +26,7 @@
     "kafkajs": "^2.2.4",
     "pg": "^8.14.1",
     "redis": "^4.7.0",
-    "socket.io": "^4.8.1",
-    "socket.io-client": "^4.8.1"
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
