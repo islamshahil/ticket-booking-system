@@ -11,6 +11,7 @@ import bookingRoutes from './routes/booking.routes';
 import { initSocketIO } from './config/socket';
 import uiRoutes from './routes/ui.routes';
 import eventRoutes from './routes/event.routes';
+// import './workers/ticketEvents.consumer';
 
 dotenv.config();
 
