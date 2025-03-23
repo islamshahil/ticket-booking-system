@@ -12,11 +12,11 @@ services:
       - .env
     restart: unless-stopped
 
-  consumer:
-    build:
-      context: .
-      dockerfile: Dockerfile.consumer
-    container_name: ticket-consumer
-    env_file:
-      - .env
-    restart: unless-stopped
+  # consumer:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.consumer
+  #   container_name: ticket-consumer
+  #   env_file:
+  #     - .env
+  #   restart: unless-stopped
