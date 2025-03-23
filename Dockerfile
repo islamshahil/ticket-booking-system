@@ -13,6 +13,8 @@ RUN npm install
 # Copy all source files
 COPY . .
 
+RUN chmod +x ./node_modules/.bin/tsc
+
 # Build the TypeScript code
 RUN npm run build
 
